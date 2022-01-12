@@ -13,6 +13,4 @@ module com.example.chat {
 
     opens com.example.chat to javafx.fxml;
     exports com.example.chat;
-    exports com.example.chat.server;
-    opens com.example.chat.server to javafx.fxml;
 }

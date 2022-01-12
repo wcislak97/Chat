@@ -1,9 +1,9 @@
-package com.example.chat.server;
+package com.example.chat;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
-public class ServerController {
+public class ClientController {
     @FXML
     private Label welcomeText;
 
