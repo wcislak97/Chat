@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.chat.ClientController">
+    <children>
+        <SplitPane dividerPositions="0.29797979797979796" prefHeight="600.0" prefWidth="883.0">
+            <items>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="598.0" prefWidth="270.0">
+                    <children>
+                        <VBox layoutX="2.0" prefHeight="598.0" prefWidth="265.0">
+                            <children>
+                                <HBox prefHeight="55.0" prefWidth="265.0">
+                                    <children>
+                                        <Label fx:id="lblWiadomosci" alignment="CENTER" prefHeight="55.0" prefWidth="270.0" text="Wiadomości" />
+                                    </children>
+                                </HBox>
+                                <ListView fx:id="listViewListOfChats" prefHeight="485.0" prefWidth="265.0" />
+                                <Button fx:id="btnNewChat" mnemonicParsing="false" prefHeight="60.0" prefWidth="267.0" text="Nowy czat" />
+                            </children>
+                        </VBox>
+                    </children>
+                </AnchorPane>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                    <children>
+                        <VBox layoutX="1.0" prefHeight="598.0" prefWidth="627.0">
+                            <children>
+                                <HBox prefHeight="53.0" prefWidth="627.0">
+                                    <children>
+                                        <Label fx:id="lblChatWithUsername" alignment="CENTER" prefHeight="53.0" prefWidth="179.0" text="Chat z XXX" />
+                                    </children>
+                                </HBox>
+                                <ScrollPane prefHeight="485.0" prefWidth="627.0">
+                                    <content>
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="482.0" prefWidth="623.0">
+                                            <children>
+                                                <ListView fx:id="listViewChatMessages" prefHeight="481.0" prefWidth="627.0" />
+                                            </children>
+                                        </AnchorPane>
+                                    </content>
+                                </ScrollPane>
+                                <HBox prefHeight="60.0" prefWidth="627.0">
+                                    <children>
+                                        <TextArea fx:id="txtAreaMessage" prefHeight="67.0" prefWidth="499.0" promptText="Start writing a message" />
+                                        <Button fx:id="btnSend" mnemonicParsing="false" onAction="#onSendButtonClicked" prefHeight="70.0" prefWidth="128.0" text="Wyślij" />
+                                    </children>
+                                </HBox>
+                            </children></VBox>
+                    </children>
+                </AnchorPane>
+            </items>
+        </SplitPane>
+    </children>
+</VBox>
