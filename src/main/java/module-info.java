@@ -10,6 +10,7 @@ module com.example.chat {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires javafx.graphics;
+    requires java.sql;
 
     opens com.example.chat to javafx.fxml;
     exports com.example.chat;
