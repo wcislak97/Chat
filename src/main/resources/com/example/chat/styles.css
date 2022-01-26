@@ -1,0 +1,77 @@
+* {
+	-fx-c1: #b9d6f2;
+	-fx-c2: #061a40;
+	-fx-c3: #0353a4;
+	-fx-c4: #006daa;
+	-fx-c5: #003559;
+    
+	-fx-focus-color: -fx-c2;
+}
+
+.split-pane:horizontal > .split-pane-divider {
+   -fx-background-color: transparent;
+}
+.split-pane:vertical > .split-pane-divider {
+   -fx-background-color: transparent;
+}
+
+.my-pane {
+	-fx-border-color: transparent;
+	-fx-background-color: transparent;
+}
+
+.pane-background{
+	-fx-background-color: linear-gradient(to top right, #061a40 0%, #b9d6f2 78%);
+}
+
+.h1{
+	-fx-font-family: "Roboto";
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #061a40;
+}
+
+.h2{
+	-fx-font-family: "Roboto";
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #0353a4;	
+}
+
+.h3{
+	-fx-font-family: "Roboto";
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #0353a4;
+}
+
+.text-field {
+	-fx-font-family: "Roboto";
+    -fx-text-fill: #0353a4;
+    -fx-font-size: 16px;
+	-fx-accent: #0353a4;
+	-fx-background-color: #0353a4, white;
+	-fx-background-insets: 0, 0 0 1 0;
+	-fx-background-radius: 30;
+}
+
+.button {
+	-fx-font-family: "Roboto";
+	-fx-font-weight: bold;
+    -fx-text-fill: -fx-c3;
+    -fx-font-size: 16px;
+	-fx-border-color: -fx-c3;
+	-fx-border-radius: 30;
+	-fx-background-color: transparent;
+	-fx-background-insets: 0, 0 0 1 0;
+	-fx-background-radius: 30;
+}
+.button:hover{
+	-fx-font-family: "Roboto";
+	-fx-font-weight: bold;
+    -fx-text-fill: rgb(255, 255, 255);
+    -fx-font-size: 16px;
+	-fx-background-color: -fx-c3;
+	-fx-background-insets: 0, 0 0 1 0;
+	-fx-background-radius: 30;
+}

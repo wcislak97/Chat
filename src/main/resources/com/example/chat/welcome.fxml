@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1024.0" styleClass="pane-background" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.chat.ClientController">
+   <children>
+      <SplitPane dividerPositions="0.837566844919786" orientation="VERTICAL" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: transparent;" stylesheets="@styles.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="769.0" prefWidth="1022.0" styleClass="my-pane" stylesheets="@styles.css">
+               <children>
+                  <SplitPane dividerPositions="0.5996971226653205" layoutX="2.0" layoutY="2.0" prefHeight="727.0" prefWidth="1020.0" stylesheets="@styles.css" AnchorPane.bottomAnchor="-62.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="1.0">
+                    <items>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="493.0" prefWidth="434.0">
+                           <children>
+                              <VBox alignment="CENTER" layoutX="117.0" layoutY="139.0" prefHeight="721.6" prefWidth="605.6" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <ImageView fitHeight="566.0" fitWidth="566.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/chat-rafiki.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children></VBox>
+                           </children></AnchorPane>
+                      <AnchorPane fx:id="sign_in_pane" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                           <children>
+                              <VBox fx:id="sign_in_vbox" alignment="CENTER_LEFT" layoutX="6.0" layoutY="95.0" prefHeight="722.0" prefWidth="396.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <Label fx:id="startForFree_label" styleClass="h3" stylesheets="@styles.css" text="START FOR FREE">
+                                       <font>
+                                          <Font name="Roboto" size="20.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="signUpToChat_label" styleClass="h1" text="Sign up to Chat Messenger">
+                                       <padding>
+                                          <Insets bottom="15.0" top="15.0" />
+                                       </padding>
+                                    </Label>
+                                    <HBox alignment="CENTER_LEFT">
+                                       <children>
+                                          <Label fx:id="have_account_label" prefHeight="31.0" prefWidth="184.0" styleClass="h2" text="Already have account?" />
+                                          <Button id="sign_in" fx:id="sign_in" alignment="TOP_CENTER" mnemonicParsing="false" onAction="#onSigninButtonClicked" prefHeight="33.0" text="Sign in!">
+                                             <HBox.margin>
+                                                <Insets left="5.0" />
+                                             </HBox.margin>
+                                          </Button>
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets bottom="30.0" />
+                                       </VBox.margin>
+                                    </HBox>
+                                    <TextField fx:id="signup_email" maxWidth="270.0" promptText="E-mail">
+                                       <VBox.margin>
+                                          <Insets bottom="15.0" />
+                                       </VBox.margin>
+                                    </TextField>
+                                    <TextField fx:id="signup_name" layoutX="10.0" layoutY="377.0" maxWidth="270.0" promptText="Name">
+                                       <VBox.margin>
+                                          <Insets bottom="15.0" />
+                                       </VBox.margin>
+                                    </TextField>
+                                    <TextField id="signup_surname" fx:id="signup_surname" layoutX="10.0" layoutY="408.0" maxWidth="270.0" promptText="Surname">
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                       <VBox.margin>
+                                          <Insets bottom="15.0" />
+                                       </VBox.margin>
+                                    </TextField>
+                                    <PasswordField fx:id="signup_password" maxWidth="270.0" promptText="Password">
+                                       <VBox.margin>
+                                          <Insets bottom="15.0" />
+                                       </VBox.margin>
+                                    </PasswordField>
+                                    <Button fx:id="signup_create" maxWidth="270.0" mnemonicParsing="false" text="Create an account" />
+                                 </children>
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                              </VBox>
+                           </children></AnchorPane>
+                    </items>
+                     <styleClass>
+                        <String fx:value="my-split" />
+                        <String fx:value="my-pane" />
+                     </styleClass>
+                  </SplitPane>
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="212.0" prefWidth="1022.0" />
+        </items>
+      </SplitPane>
+   </children>
+</AnchorPane>
