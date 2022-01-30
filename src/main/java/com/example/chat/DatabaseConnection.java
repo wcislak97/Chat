@@ -14,6 +14,8 @@ public class DatabaseConnection {
     Statement statement;
     PreparedStatement preStatement;
 
+    DatabaseConnection(){};
+
     ResultSet selectStatement(String queryText){
         String query=queryText;
         ResultSet rs=null;

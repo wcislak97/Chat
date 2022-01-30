@@ -76,7 +76,9 @@
                                           <Insets bottom="15.0" />
                                        </VBox.margin>
                                     </PasswordField>
-                                    <Button fx:id="signup_create" maxWidth="290.0" mnemonicParsing="false" text="Create an account" />
+
+                                    <Button fx:id="signup_create" maxWidth="270.0" mnemonicParsing="false" onAction="#onsignup_createButtonClicked" text="Create an account" />
+
                                  </children>
                                  <opaqueInsets>
                                     <Insets />
