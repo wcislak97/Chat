@@ -48,7 +48,6 @@ public class ClientConnectionService extends Thread {
 
     public  void run() {
         // listen to events from server
-        this.sendMessage("suchenia wydupcaj");
     }
 
 }
