@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +44,37 @@ public class ChatScreenController {
     }
 
     private void addMessage(String message){
-        listViewChatMessages.getItems().add(message);
+        if(checkIfBadWord(message))
+        {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Napisano brzydkie słowo!!!");
+            alert.showAndWait();
+        }else {
+            listViewChatMessages.getItems().add(message);
+        }
+    }
+
+    private boolean checkIfBadWord(String message){
+        List<String> bad_words_list = new ArrayList<>();
+        bad_words_list.add("dupa");
+
+        try{
+            DatabaseConnection db = new DatabaseConnection();
+            ResultSet rs;
+            rs=db.selectStatement("SELECT bad_word FROM bad_words");
+
+            while(rs.next()){
+                bad_words_list.add(rs.getString("bad_word"));
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        for(String word : bad_words_list){
+            if(message.contains(word)){
+                return true;
+            }
+        }
+        return false;
     }
 
 

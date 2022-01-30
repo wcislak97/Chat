@@ -42,7 +42,7 @@
                                     </Label>
                                     <HBox alignment="CENTER_LEFT">
                                        <children>
-                                          <Label fx:id="have_account_label" prefHeight="31.0" prefWidth="184.0" styleClass="h2" text="Already have account?" />
+                                          <Label fx:id="have_account_label" minWidth="200.0" prefHeight="31.0" prefWidth="184.0" styleClass="h2" text="Already have account?" />
                                           <Button id="sign_in" fx:id="sign_in" alignment="TOP_CENTER" mnemonicParsing="false" onAction="#onSigninButtonClicked" prefHeight="33.0" text="Sign in!">
                                              <HBox.margin>
                                                 <Insets left="5.0" />
@@ -53,17 +53,17 @@
                                           <Insets bottom="30.0" />
                                        </VBox.margin>
                                     </HBox>
-                                    <TextField fx:id="signup_email" maxWidth="270.0" promptText="E-mail">
+                                    <TextField fx:id="signup_email" maxWidth="290.0" promptText="E-mail">
                                        <VBox.margin>
                                           <Insets bottom="15.0" />
                                        </VBox.margin>
                                     </TextField>
-                                    <TextField fx:id="signup_name" layoutX="10.0" layoutY="377.0" maxWidth="270.0" promptText="Name">
+                                    <TextField fx:id="signup_name" layoutX="10.0" layoutY="377.0" maxWidth="290.0" promptText="Name">
                                        <VBox.margin>
                                           <Insets bottom="15.0" />
                                        </VBox.margin>
                                     </TextField>
-                                    <TextField id="signup_surname" fx:id="signup_surname" layoutX="10.0" layoutY="408.0" maxWidth="270.0" promptText="Surname">
+                                    <TextField id="signup_surname" fx:id="signup_surname" layoutX="10.0" layoutY="408.0" maxWidth="290.0" promptText="Surname">
                                        <opaqueInsets>
                                           <Insets />
                                        </opaqueInsets>
@@ -71,12 +71,14 @@
                                           <Insets bottom="15.0" />
                                        </VBox.margin>
                                     </TextField>
-                                    <PasswordField fx:id="signup_password" maxWidth="270.0" promptText="Password">
+                                    <PasswordField fx:id="signup_password" maxWidth="290.0" promptText="Password">
                                        <VBox.margin>
                                           <Insets bottom="15.0" />
                                        </VBox.margin>
                                     </PasswordField>
+
                                     <Button fx:id="signup_create" maxWidth="270.0" mnemonicParsing="false" onAction="#onsignup_createButtonClicked" text="Create an account" />
+
                                  </children>
                                  <opaqueInsets>
                                     <Insets />
