@@ -6,15 +6,15 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class ClientConnectionService extends Thread {
+public class ServerConnectionService extends Thread {
 
     private Socket socket;
     private BufferedReader reader;
     private PrintWriter writer;
 
-    public ClientConnectionService() {
+    public ServerConnectionService(Socket socket) {
         try {
-            this.socket = new Socket("localhost", 9999);
+            this.socket = socket;
             this.reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             this.writer = new PrintWriter(socket.getOutputStream(), true);
         } catch (IOException e) {
@@ -47,8 +47,16 @@ public class ClientConnectionService extends Thread {
     }
 
     public  void run() {
-        // listen to events from server
-        this.sendMessage("wysylanie wiadomosci");
+        // listen to events from client
+        String inputLine;
+        try {
+            while ((inputLine = reader.readLine()) != null) {
+                System.out.println("Wiadomosc od klienta: " + inputLine);
+            }
+
+        } catch(Exception e) {
+            System.err.println(e);
+        }
     }
 
 }
