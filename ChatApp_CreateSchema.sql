@@ -2,7 +2,7 @@ create database ChatApp;
 
 USE ChatApp;
 
-create table User(
+create table Users(
 username varchar(255) primary key,
 password varchar(100)
 );
@@ -11,7 +11,7 @@ create table User_details(
 username varchar(255) primary key,
 name varchar(100),
 surname varchar(100),
-foreign key(username) references User(username)
+foreign key(username) references Users(username)
 );
 
 create table Message(
@@ -19,7 +19,7 @@ message_id integer primary key auto_increment,
 username varchar(255) not null,
 message_body varchar(255),
 sent_time datetime,
-foreign key (username) references User(username)
+foreign key (username) references Users(username)
 );
 
 create table Chat(
@@ -45,11 +45,11 @@ create table Chat_User(
 chat_id integer,
 username varchar(255),
 foreign key(chat_id) references Chat(chat_id),
-foreign key(username) references User(username),
+foreign key(username) references Users(username),
 primary key(chat_id, username)
 );
 
-INSERT INTO user VALUES('test','test');
+INSERT INTO users VALUES('test','test');
 INSERT INTO user_details VALUES ('test','test','test');
 
 INSERT INTO bad_words(bad_word) VALUES

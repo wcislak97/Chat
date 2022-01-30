@@ -10,8 +10,10 @@ import javafx.scene.layout.VBox;
 import com.example.chat.*;
 import javafx.scene.control.Alert;
 
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 
 
 public class ClientController {
@@ -65,6 +67,7 @@ public class ClientController {
 
     @FXML
     protected void onSigninButtonClicked(ActionEvent event) {
+
         ObservableList<Node> vbox = sign_in_vbox.getChildren();
 
         if (vbox.contains(signup_name)) {
@@ -104,6 +107,7 @@ public class ClientController {
         ObservableList<Node> vbox = sign_in_vbox.getChildren();
         DatabaseConnection db = new DatabaseConnection();
         ResultSet rs;
+        SceneController newScene = new SceneController();
         if (sign_in.getText() == "Sign up!") {
 
             //sign in
@@ -118,7 +122,7 @@ public class ClientController {
             } else {
                 try{
 
-                rs = db.selectStatement("SELECT * FROM user WHERE username='" + email + "' and password='" + pw+"'");
+                rs = db.selectStatement("SELECT * FROM users WHERE username='" + email + "' and password='" + pw+"'");
 
                     //if no user like that exist
                     if (rs.next() == false) {
@@ -129,13 +133,14 @@ public class ClientController {
 
                         //if user exists open chat
                         System.out.println("SHOW THIS USER CHAT WINDOW!");
+                        newScene.switchScene(event, "chat_scene.fxml");
 
                         //SET SCENE
                         //ZACZNIJ PRACE SERWERA?
 
                     }
                 }
-                catch(SQLException e){
+                catch(SQLException | IOException e){
                     e.printStackTrace();
                 }
 
@@ -157,7 +162,7 @@ public class ClientController {
             if(is_form_valid(email, pw, name, surname)){
                 try{
 
-                    rs = db.selectStatement("SELECT * FROM user WHERE username='" + email + "'");
+                    rs = db.selectStatement("SELECT * FROM users WHERE username='" + email + "'");
 
                     //if no user like that exist
                     if (rs.next() == true) {
@@ -165,7 +170,7 @@ public class ClientController {
                         alert.showAndWait();
                     }
                     else{
-                        i1=db.insertStatement("INSERT INTO user (username,password) VALUES ('"+email+"', '"+pw+"')");
+                        i1=db.insertStatement("INSERT INTO users (username,password) VALUES ('"+email+"', '"+pw+"')");
                         i2=db.insertStatement("INSERT INTO user_details (username,name,surname) VALUES ('"+email+"', '"+name+"', '"+surname+"')");
 
                         //i1 and i2 true if success

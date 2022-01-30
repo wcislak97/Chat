@@ -191,7 +191,7 @@
 }*/
 
 .list-cell {
-    -fx-background-color: -fx-c2;
+    -fx-background-color: transparent;
 	-fx-opacity: 0.5;
     -fx-background-radius : 0;
 	-fx-border-color: -fx-c1;
