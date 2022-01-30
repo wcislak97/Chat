@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.shape.SVGPath?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1024.0" styleClass="pane-background" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.chat.ClientController">
+<AnchorPane prefHeight="800.0" prefWidth="1024.0" styleClass="pane-background" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.chat.ChatScreenController">
    <children>
         <SplitPane dividerPositions="0.29797979797979796" prefHeight="800.0" prefWidth="1024.0" styleClass="my-pane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <items>
@@ -58,7 +58,7 @@
                            <padding>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </padding></TextArea>
-                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" HBox.hgrow="ALWAYS">
+                        <Button fx:id="btnSend" onAction="#onbtnSendClicked" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" HBox.hgrow="ALWAYS">
                            <graphic>
                               <SVGPath content="M7,24a1,1,0,0,1-.71-.29,1,1,0,0,1,0-1.42l8.17-8.17a3,3,0,0,0,0-4.24L6.29,1.71A1,1,0,0,1,7.71.29l8.17,8.17a5,5,0,0,1,0,7.08L7.71,23.71A1,1,0,0,1,7,24Z" styleClass="arrow-button2" />
                            </graphic>

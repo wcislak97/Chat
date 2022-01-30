@@ -119,6 +119,7 @@ public class ClientController {
                     else{
 
                         //if user exists open chat
+                        System.out.println("SHOW THIS USER CHAT WINDOW!");
 
                         //SET SCENE
                         //ZACZNIJ PRACE SERWERA?
