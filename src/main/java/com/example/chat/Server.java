@@ -18,8 +18,7 @@ public class Server {
                 System.out.println("Czekam na polaczenie...");
                 socket = serverSocket.accept();
                 System.out.println("Nawiazano polaczenie.");
-                ClientService clientThread = new ClientService(socket, clients);
-                clients.add(clientThread);
+                ServerConnectionService clientThread = new ServerConnectionService(socket);
                 clientThread.start();
             }
         } catch (IOException e) {
