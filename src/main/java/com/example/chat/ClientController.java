@@ -90,6 +90,15 @@ public class ClientController {
 
     }
 
+    private boolean is_form_valid(String ...fields) {
+        for(String field : fields) {
+            if (field.isBlank() || field.isEmpty()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     @FXML
     protected void onsignup_createButtonClicked(ActionEvent event) throws SQLException {
         ObservableList<Node> vbox = sign_in_vbox.getChildren();
@@ -145,12 +154,7 @@ public class ClientController {
             int i1;
             int i2;
 
-            if (email.isEmpty() || pw.isEmpty() || email.isBlank() || pw.isBlank() || name.isBlank() || name.isEmpty() || surname.isEmpty() || surname.isBlank()) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Some info is lacking");
-                alert.showAndWait();
-            }
-            else{
-
+            if(is_form_valid(email, pw, name, surname)){
                 try{
 
                     rs = db.selectStatement("SELECT * FROM user WHERE username='" + email + "'");
@@ -180,6 +184,10 @@ public class ClientController {
                 catch(SQLException e){
                     e.printStackTrace();
                 }
+            }
+            else{
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Some info is lacking");
+                alert.showAndWait();
             }
 
         }
