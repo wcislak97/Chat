@@ -24,7 +24,6 @@ public class DatabaseConnection {
             con = DriverManager.getConnection(url + '/' + dbName, username, password);
             statement = con.createStatement();
             rs=statement.executeQuery(query);
-
         } catch (SQLException e) {
             System.out.println("Blad podczas wybierania danych");
             e.printStackTrace();

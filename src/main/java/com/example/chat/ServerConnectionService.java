@@ -1,62 +1,73 @@
 package com.example.chat;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-public class ServerConnectionService extends Thread {
+public class ServerConnectionService implements Runnable {
 
-    private Socket socket;
-    private BufferedReader reader;
-    private PrintWriter writer;
+    private final Socket socket;
+    private final DataOutputStream dataOutputStream;
+    private final DataInputStream dataInputStream;
 
-    public ServerConnectionService(Socket socket) {
-        try {
-            this.socket = socket;
-            this.reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            this.writer = new PrintWriter(socket.getOutputStream(), true);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private final ConcurrentHashMap<Integer, ServerConnectionService> concurrentHashMap;
+    private boolean isRunning;
+
+    public ServerConnectionService(Socket socket, ConcurrentHashMap<Integer, ServerConnectionService> concurrentHashMap) throws IOException {
+        this.socket = socket;
+        this.dataOutputStream = new DataOutputStream(socket.getOutputStream());
+        this.dataInputStream = new DataInputStream(socket.getInputStream());
+        this.concurrentHashMap = concurrentHashMap;
+        this.isRunning = true;
     }
 
-
-    public String sendMessage(String msg) {
-        try {
-            writer.println(msg);
-            String resp = null;
-            resp = reader.readLine();
-            return resp;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return "";
+    public void sendMessage(String msg) throws IOException {
+        dataOutputStream.writeUTF(msg);
     }
 
-    public void stopConnection() {
-        try {
-            reader.close();
-            writer.close();
-            this.socket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+    public void stopConnection() throws IOException {
+        dataInputStream.close();
+        dataOutputStream.close();
+        isRunning = false;
+        socket.close();
     }
 
-    public  void run() {
-        // listen to events from client
-        String inputLine;
-        try {
-            while ((inputLine = reader.readLine()) != null) {
-                System.out.println("Wiadomosc od klienta: " + inputLine);
+    public void run() {
+        while (isRunning) {
+            try {
+                String action = dataInputStream.readUTF();
+                switch (action) {
+                    case "sendMessage" -> {
+                        String playerId = dataInputStream.readUTF();
+                        String msg = dataInputStream.readUTF();
+                        concurrentHashMap.get(Integer.parseInt(playerId)).sendMessage(msg);
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                isRunning = false;
             }
-
-        } catch(Exception e) {
-            System.err.println(e);
         }
+//        executorService.submit(() -> {
+//           while (isRunning) {
+//               try {
+//                   String action = dataInputStream.readUTF();
+//                   switch (action) {
+//                       case "sendMessage" -> {
+//                           String playerId = dataInputStream.readUTF();
+//                           String msg = dataInputStream.readUTF();
+//                           concurrentHashMap.get(Integer.parseInt(playerId)).sendMessage(msg);
+//                       }
+//                   }
+//               } catch (IOException e) {
+//                   e.printStackTrace();
+//                   isRunning = false;
+//               }
+//           }
+//        });
     }
 
 }

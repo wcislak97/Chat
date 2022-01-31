@@ -13,7 +13,7 @@ import com.example.chat.DatabaseConnection;
 import java.io.IOException;
 
 public class Client extends Application {
-    private ClientConnectionService clientConnection;
+    public static ClientConnectionService clientConnection;
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Server.class.getResource("welcome.fxml"));
@@ -21,10 +21,9 @@ public class Client extends Application {
         stage.setTitle("Chat Messenger");
         stage.setScene(scene);
         stage.show();
-        this.clientConnection = new ClientConnectionService();
-        this.clientConnection.start();
+        clientConnection = new ClientConnectionService();
+        clientConnection.run();
     }
-
 
     public static void main(String[] args) {
         launch();

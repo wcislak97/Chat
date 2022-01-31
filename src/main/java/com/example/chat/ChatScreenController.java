@@ -1,15 +1,19 @@
 package com.example.chat;
 
+import javafx.application.Platform;
 import javafx.beans.binding.StringBinding;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChatScreenController {
+public class ChatScreenController implements PropertyChangeListener {
 
     @FXML
     private ListView listViewListOfChats;
@@ -29,27 +33,33 @@ public class ChatScreenController {
     @FXML
     private Label lblChatWithUsername;
 
+    public ChatScreenController() {
+        Client.clientConnection.addListener(this);
+    }
+
     @FXML
     private void onbtnSendClicked(){
         String message=txtAreaMessage.getText();
-        if(message.isBlank() || message.isBlank()){
+        if (message.isBlank() || message.isBlank()) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION, "Message is empty");
             alert.showAndWait();
-        }
-        else{
+        } else {
             addMessage(message);
             txtAreaMessage.clear();
         }
-
     }
 
     private void addMessage(String message){
-        if(checkIfBadWord(message))
-        {
+        if(checkIfBadWord(message)) {
             Alert alert = new Alert(Alert.AlertType.WARNING, "Napisano brzydkie słowo!!!");
             alert.showAndWait();
-        }else {
+        } else {
             listViewChatMessages.getItems().add(message);
+            try {
+                Client.clientConnection.sendMessage(message);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -78,6 +88,10 @@ public class ChatScreenController {
     }
 
 
-
-
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        Platform.runLater(() -> {
+            listViewChatMessages.getItems().add(evt.getNewValue());
+        });
+    }
 }

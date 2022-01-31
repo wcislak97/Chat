@@ -90,7 +90,6 @@ public class ClientController {
             signup_create.setText("Create an account!");
 
         }
-
     }
 
     private boolean is_form_valid(String ...fields) {
@@ -122,7 +121,7 @@ public class ClientController {
             } else {
                 try{
 
-                rs = db.selectStatement("SELECT * FROM users WHERE username='" + email + "' and password='" + pw+"'");
+                    rs = db.selectStatement("SELECT * FROM users WHERE username='" + email + "' and password='" + pw+"'");
 
                     //if no user like that exist
                     if (rs.next() == false) {

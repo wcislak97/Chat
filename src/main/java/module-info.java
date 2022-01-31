@@ -11,6 +11,7 @@ module com.example.chat {
     requires eu.hansolo.tilesfx;
     requires javafx.graphics;
     requires java.sql;
+    requires java.desktop;
 
     opens com.example.chat to javafx.fxml;
     exports com.example.chat;
