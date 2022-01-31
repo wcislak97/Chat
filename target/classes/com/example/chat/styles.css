@@ -44,6 +44,12 @@
     -fx-font-weight: bold;
     -fx-text-fill: #0353a4;
 }
+.h4{
+	-fx-font-family: "Roboto";
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #061a40;	
+}
 
 .text-field {
 	-fx-font-family: "Roboto";
@@ -100,6 +106,7 @@
 }
 
 .arrow-button {
+	-fx-fill: white;
 	-fx-background-color: white;
 	-fx-border-color: white;
 	-fx-pref-width: 5;
@@ -111,7 +118,9 @@
 .arrow-button2 {
 	-fx-fill: white;
 }
-
+.ico-button {
+	-fx-fill: white;
+}
 .scroll-bar:horizontal ,
 .scroll-bar:vertical {
 	fx-margin-right: 50;
@@ -192,14 +201,14 @@
 
 .list-cell {
     -fx-background-color: transparent;
-	-fx-opacity: 0.5;
+	-fx-opacity: 0.1;
     -fx-background-radius : 0;
 	-fx-border-color: -fx-c1;
 	-fx-border-radius: 0;
 }
 .list-view, .scroll-pane {
     -fx-background-color: white;
-	-fx-opacity: 0.5;
+	-fx-opacity: 0.1;	
     -fx-background-radius : 0;
 	-fx-border-color: -fx-c1;
 	-fx-border-radius: 0;
@@ -209,3 +218,4 @@
     -fx-background-radius : 0;
 	-fx-border-radius: 0;
 }
+
