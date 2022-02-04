@@ -2,8 +2,18 @@ package com.example.chat;
 
 import javafx.application.Platform;
 import javafx.beans.binding.StringBinding;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -23,6 +33,12 @@ public class ChatScreenController implements PropertyChangeListener {
 
     @FXML
     private Button btnNewChat;
+
+    @FXML
+    private Button btnFindFriend;
+
+    @FXML
+    private Button btnSettings;
 
     @FXML
     private Button btnSend;
@@ -47,6 +63,47 @@ public class ChatScreenController implements PropertyChangeListener {
             addMessage(message);
             txtAreaMessage.clear();
         }
+    }
+
+    @FXML
+
+
+    private void onbtnNewChatClicked(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("new_chat.fxml"));
+
+        Parent parent = fxmlLoader.load();
+//        NewChatDialogController dialogController = fxmlLoader.<NewChatDialogController>getController();
+//        dialogController.setAppMainObservableList(tvObservableList);
+
+        NewChatDialogController dialogController = new NewChatDialogController();
+        fxmlLoader.setController(dialogController);
+        Scene scene = new Scene(parent, 330, 400);
+        Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setResizable(false);
+        stage.setScene(scene);
+
+        stage.showAndWait();
+
+    }
+
+    @FXML
+    private void onbtnFindFriendClicked(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader2 = new FXMLLoader(getClass().getResource("find_friend.fxml"));
+        Parent parent2 = fxmlLoader2.load();
+        AddFriendDialogController dialogController2 = fxmlLoader2.<AddFriendDialogController>getController();
+        Scene scene = new Scene(parent2, 330, 400);
+        Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setResizable(false);
+        stage.setScene(scene);
+        stage.showAndWait();
+
+    }
+
+    @FXML
+    private void onbtnSettingsClicked(){
+
     }
 
     private void addMessage(String message){

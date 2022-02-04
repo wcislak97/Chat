@@ -190,6 +190,26 @@
 }
 
 .list-cell {
+	-fx-opacity: 0.5;
+    -fx-background-radius : 0;
+	-fx-border-color: -fx-c1;
+	-fx-border-radius: 0;
+}
+.list-view, .scroll-pane {
+    -fx-background-color: white;
+	-fx-opacity: 0.5;	
+    -fx-background-radius : 0;
+	-fx-border-color: -fx-c1;
+	-fx-border-radius: 0;
+}
+.list-view:vertical .virtual-port{
+	-fx-background-color: white;
+    -fx-background-radius : 0;
+	-fx-border-radius: 0;
+}
+/*
+
+.list-cell {
     -fx-background-color: transparent;
 	-fx-opacity: 0.1;
     -fx-background-radius : 0;
@@ -208,4 +228,4 @@
     -fx-background-radius : 0;
 	-fx-border-radius: 0;
 }
-
+*/

@@ -17,6 +17,7 @@ import java.sql.SQLException;
 
 
 public class ClientController {
+    private static String username_true;
 //
 //    @FXML
 //    private ListView listViewChatMessages;
@@ -25,6 +26,10 @@ public class ClientController {
 //    @FXML
 //    private TextArea txtAreaMessage;
 //
+
+    public static String getUsername_true() {
+        return username_true;
+    }
 
 
     @FXML
@@ -101,6 +106,7 @@ public class ClientController {
         return true;
     }
 
+
     @FXML
     protected void onsignup_createButtonClicked(ActionEvent event) throws SQLException {
         ObservableList<Node> vbox = sign_in_vbox.getChildren();
@@ -129,7 +135,7 @@ public class ClientController {
                         alert.showAndWait();
                     }
                     else{
-
+                        username_true = email;
                         //if user exists open chat
                         System.out.println("SHOW THIS USER CHAT WINDOW!");
                         newScene.switchScene(event, "chat_scene.fxml");
