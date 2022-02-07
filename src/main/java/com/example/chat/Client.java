@@ -21,6 +21,9 @@ public class Client extends Application {
         stage.setTitle("Chat Messenger");
         stage.setScene(scene);
         stage.show();
+        // initialize store
+        new DataStore();
+        // initialize client
         this.clientConnection = new ClientConnectionService();
         this.clientConnection.start();
     }

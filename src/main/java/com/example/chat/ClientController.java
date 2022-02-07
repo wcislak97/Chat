@@ -9,11 +9,13 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import com.example.chat.*;
 import javafx.scene.control.Alert;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import static com.example.chat.ClientConnectionService.sendMessage;
 
 
 public class ClientController {
@@ -103,7 +105,7 @@ public class ClientController {
     }
 
     @FXML
-    protected void onsignup_createButtonClicked(ActionEvent event) throws SQLException {
+    protected void onsignup_createButtonClicked(ActionEvent event) throws SQLException, IOException, InterruptedException {
         ObservableList<Node> vbox = sign_in_vbox.getChildren();
         DatabaseConnection db = new DatabaseConnection();
         ResultSet rs;
@@ -116,35 +118,50 @@ public class ClientController {
             String pw = signup_password.getText();
 
             //if user info blank or empty
-            if (email.isEmpty() || pw.isEmpty() || email.isBlank() || pw.isBlank()) {
+            if (is_form_valid(email, pw)) {
+                JSONObject jo = new JSONObject();
+                jo.put("operation", "login");
+                jo.put("username", email);
+                jo.put("password", pw);
+                sendMessage(jo.toString());
+                System.out.println("Wyslano login");
+                System.out.println(DataStore.isLoggedIn);
+                if (DataStore.isLoggedIn) {
+                    newScene.switchScene(event, "chat_scene.fxml");
+                }
+            } else {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, "No sign in information provided");
                 alert.showAndWait();
-            } else {
-                try{
-
-                rs = db.selectStatement("SELECT * FROM users WHERE username='" + email + "' and password='" + pw+"'");
-
-                    //if no user like that exist
-                    if (rs.next() == false) {
-                        Alert alert = new Alert(Alert.AlertType.INFORMATION, "This username and password does not exist");
-                        alert.showAndWait();
-                    }
-                    else{
-
-                        //if user exists open chat
-                        System.out.println("SHOW THIS USER CHAT WINDOW!");
-                        newScene.switchScene(event, "chat_scene.fxml");
-
-                        //SET SCENE
-                        //ZACZNIJ PRACE SERWERA?
-
-                    }
-                }
-                catch(SQLException | IOException e){
-                    e.printStackTrace();
-                }
-
             }
+//            if (email.isEmpty() || pw.isEmpty() || email.isBlank() || pw.isBlank()) {
+//
+//            } else {
+//                try{
+
+//
+//                rs = db.selectStatement("SELECT * FROM users WHERE username='" + email + "' and password='" + pw+"'");
+//
+//                    //if no user like that exist
+//                    if (rs.next() == false) {
+//                        Alert alert = new Alert(Alert.AlertType.INFORMATION, "This username and password does not exist");
+//                        alert.showAndWait();
+//                    }
+//                    else{
+//
+//                        //if user exists open chat
+//                        System.out.println("SHOW THIS USER CHAT WINDOW!");
+//                        newScene.switchScene(event, "chat_scene.fxml");
+//
+//                        //SET SCENE
+//                        //ZACZNIJ PRACE SERWERA?
+//
+//                    }
+//                }
+//                catch(SQLException | IOException e){
+//                    e.printStackTrace();
+//                }
+
+//            }
 
 
         } else {
