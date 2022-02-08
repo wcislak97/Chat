@@ -16,7 +16,7 @@
    <children>
         <SplitPane dividerPositions="0.29797979797979796" prefHeight="800.0" prefWidth="1024.0" styleClass="my-pane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <items>
-            <BorderPane maxWidth="300.0" minHeight="300.0" prefHeight="300.0">
+            <BorderPane maxWidth="300.0" minHeight="300.0" prefHeight="300.0" styleClass="border-pane-left2">
                <center>
                       <AnchorPane minHeight="0.0" minWidth="300.0">
                           <children>
@@ -25,18 +25,41 @@
                       </AnchorPane>
                </center>
                <top>
-                          <HBox alignment="CENTER" BorderPane.alignment="CENTER">
+                          <HBox alignment="CENTER_LEFT" styleClass="border-pane-left2" BorderPane.alignment="CENTER">
                               <children>
-                                  <Label fx:id="lblWiadomosci" alignment="CENTER" prefHeight="60.0" styleClass="h1" text="Wiadomości" />
+                                  <Label fx:id="lblWiadomosci" prefHeight="60.0" styleClass="h4" text="Chat Messenger" />
                               </children>
+                     <BorderPane.margin>
+                        <Insets />
+                     </BorderPane.margin>
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
                           </HBox>
                </top>
                <bottom>
-                          <Button fx:id="btnNewChat" mnemonicParsing="false" prefHeight="70.0" prefWidth="267.0" text="Nowy czat" BorderPane.alignment="CENTER">
+                  <HBox alignment="CENTER" prefHeight="70.0" spacing="20.0" BorderPane.alignment="CENTER">
                      <BorderPane.margin>
                         <Insets bottom="10.0" top="10.0" />
                      </BorderPane.margin>
-                  </Button>
+                     <children>
+                         <Button fx:id="btnNewChat" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onbtnNewChatClicked" prefHeight="60.0" prefWidth="60.0" HBox.hgrow="ALWAYS">
+                             <graphic>
+                                 <SVGPath content="M24,10v9a5.006,5.006,0,0,1-5,5H5a5.006,5.006,0,0,1-5-5V8A5.006,5.006,0,0,1,5,3h8a1,1,0,0,1,0,2H5A2.99,2.99,0,0,0,2.361,6.6l7.517,7.518a3.008,3.008,0,0,0,4.244,0L17.943,10.3a1,1,0,0,1,1.414,1.414l-3.821,3.822a5.008,5.008,0,0,1-7.072,0L2,9.071V19a3,3,0,0,0,3,3H19a3,3,0,0,0,3-3V10A1,1,0,0,1,24,10ZM17,5h2V7a1,1,0,0,0,2,0V5h2a1,1,0,0,0,0-2H21V1a1,1,0,0,0-2,0V3H17A1,1,0,0,0,17,5Z" styleClass="arrow-button2" />
+                             </graphic>
+                         </Button>
+                         <Button fx:id="btnFindFriend" alignment="CENTER" contentDisplay="CENTER" minHeight="60.0" minWidth="60.0" mnemonicParsing="false" onAction="#onbtnFindFriendClicked" prefHeight="60.0" prefWidth="60.0" HBox.hgrow="ALWAYS">
+                             <graphic>
+                                 <SVGPath content="M506.02,475.743L378.865,348.588c74.591-91.227,61.105-225.649-30.122-300.239S123.095-12.757,48.504,78.47  S-12.601,304.119,78.626,378.71c78.578,64.249,191.54,64.249,270.118,0l127.155,127.155c8.463,8.173,21.949,7.939,30.122-0.524  C513.993,497.086,513.993,483.998,506.02,475.743z M43.604,213.87c0-94.121,76.3-170.421,170.421-170.421  s170.421,76.3,170.421,170.421s-76.3,170.421-170.421,170.421C119.948,384.185,43.71,307.947,43.604,213.87z M256.631,128.659  c-15.914,0.072-31.183,6.301-42.605,17.383c-11.422-11.081-26.691-17.311-42.605-17.383c-36.433,1.262-64.997,31.73-63.908,68.168  c0,42.605,43.479,86.553,79.97,115.886c15.533,12.371,37.553,12.371,53.086,0c36.491-29.334,79.97-73.281,79.97-115.886  C321.627,160.389,293.064,129.921,256.631,128.659z M214.153,279.482c-39.495-31.741-64.036-63.482-64.036-82.654  c-1.063-12.906,8.416-24.282,21.303-25.563c12.886,1.281,22.366,12.657,21.303,25.563c0,11.765,9.537,21.303,21.303,21.303  c11.765,0,21.303-9.537,21.303-21.303c-1.063-12.906,8.416-24.282,21.303-25.563c12.886,1.281,22.366,12.657,21.303,25.563  C277.933,216,253.393,247.741,214.153,279.482L214.153,279.482z" scaleX="0.05" scaleY="0.05" styleClass="arrow-button2" />
+                             </graphic>
+                         </Button>
+                         <Button fx:id="btnSettings" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onbtnSettingsClicked" prefHeight="60.0" prefWidth="60.0" HBox.hgrow="ALWAYS">
+                             <graphic>
+                                 <SVGPath content="M21.77,8.948a1.238,1.238,0,0,1-.7-1.7,3.239,3.239,0,0,0-4.315-4.316,1.239,1.239,0,0,1-1.7-.7,3.239,3.239,0,0,0-6.1,0,1.238,1.238,0,0,1-1.7.7A3.239,3.239,0,0,0,2.934,7.249a1.237,1.237,0,0,1-.7,1.7,3.24,3.24,0,0,0,0,6.1,1.238,1.238,0,0,1,.705,1.7A3.238,3.238,0,0,0,7.25,21.066a1.238,1.238,0,0,1,1.7.7,3.239,3.239,0,0,0,6.1,0,1.238,1.238,0,0,1,1.7-.7,3.239,3.239,0,0,0,4.316-4.315,1.239,1.239,0,0,1,.7-1.7,3.239,3.239,0,0,0,0-6.1Zm-.67,4.219a3.239,3.239,0,0,0-1.84,4.442,1.239,1.239,0,0,1-1.652,1.651,3.238,3.238,0,0,0-4.441,1.84,1.238,1.238,0,0,1-2.334,0,3.24,3.24,0,0,0-4.442-1.84,1.239,1.239,0,0,1-1.65-1.652A3.238,3.238,0,0,0,2.9,13.167a1.239,1.239,0,0,1,0-2.334A3.237,3.237,0,0,0,4.74,6.391,1.239,1.239,0,0,1,6.391,4.74,3.239,3.239,0,0,0,10.833,2.9a1.238,1.238,0,0,1,2.334,0,3.239,3.239,0,0,0,4.442,1.84A1.239,1.239,0,0,1,19.26,6.392a3.238,3.238,0,0,0,1.84,4.441,1.238,1.238,0,0,1,0,2.334Z" styleClass="arrow-button2" />
+                             </graphic>
+                         </Button>
+                     </children>
+                  </HBox>
                </bottom>
             </BorderPane>
             <BorderPane>
@@ -58,7 +81,7 @@
                            <padding>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </padding></TextArea>
-                        <Button fx:id="btnSend" onAction="#onbtnSendClicked" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" HBox.hgrow="ALWAYS">
+                        <Button fx:id="btnSend" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onbtnSendClicked" prefHeight="40.0" prefWidth="40.0" HBox.hgrow="ALWAYS">
                            <graphic>
                               <SVGPath content="M7,24a1,1,0,0,1-.71-.29,1,1,0,0,1,0-1.42l8.17-8.17a3,3,0,0,0,0-4.24L6.29,1.71A1,1,0,0,1,7.71.29l8.17,8.17a5,5,0,0,1,0,7.08L7.71,23.71A1,1,0,0,1,7,24Z" styleClass="arrow-button2" />
                            </graphic>
@@ -76,10 +99,13 @@
                           </HBox>
                </bottom>
                <top>
-                          <HBox alignment="CENTER" prefHeight="60.0" prefWidth="0.0" BorderPane.alignment="CENTER">
+                          <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="0.0" BorderPane.alignment="CENTER">
                               <children>
-                                  <Label fx:id="lblChatWithUsername" alignment="CENTER" prefHeight="53.0" prefWidth="179.0" styleClass="h1" text="Chat z XXX" />
+                                  <Label fx:id="lblChatWithUsername" alignment="CENTER" prefHeight="53.0" styleClass="h4" text="#Nazwa czatu" />
                               </children>
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
                           </HBox>
                </top>
             </BorderPane>

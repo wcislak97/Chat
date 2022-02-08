@@ -16,7 +16,7 @@ public class ClientConnectionService extends Thread {
 
     public ClientConnectionService() {
         try {
-            this.socket = new Socket("localhost", 9999);
+            this.socket = new Socket("localhost", 9997);
             this.reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             this.writer = new PrintWriter(socket.getOutputStream(), true);
         } catch (IOException e) {

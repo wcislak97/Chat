@@ -12,6 +12,7 @@ module com.example.chat {
     requires javafx.graphics;
     requires java.sql;
     requires org.json;
+    requires java.desktop;
 
     opens com.example.chat to javafx.fxml;
     exports com.example.chat;

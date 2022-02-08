@@ -13,7 +13,7 @@ public class Server {
         Socket socket;
 
         try {
-            serverSocket = new ServerSocket(9999);
+            serverSocket = new ServerSocket(9997);
             while(true){
                 System.out.println("Czekam na polaczenie...");
                 socket = serverSocket.accept();
