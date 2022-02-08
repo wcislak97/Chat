@@ -1,5 +1,7 @@
 package com.example.chat;
 
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -8,9 +10,9 @@ import java.net.Socket;
 
 public class ClientConnectionService extends Thread {
 
-    private Socket socket;
-    private BufferedReader reader;
-    private PrintWriter writer;
+    private static Socket socket;
+    private static BufferedReader reader;
+    private static PrintWriter writer;
 
     public ClientConnectionService() {
         try {
@@ -23,7 +25,7 @@ public class ClientConnectionService extends Thread {
     }
 
 
-    public String sendMessage(String msg) {
+    public static String sendMessage(String msg) {
         try {
             writer.println(msg);
             String resp = null;
@@ -46,9 +48,33 @@ public class ClientConnectionService extends Thread {
 
     }
 
+    public void resolveLogin(JSONObject input) {
+        DataStore.email = input.get("email").toString();
+        DataStore.isLoggedIn = true;
+    }
+
+    public void resolveOperation(JSONObject input) {
+        String operation = input.get("operation").toString();
+        switch (operation) {
+            case "login":
+                resolveLogin(input);
+        }
+    }
+
     public  void run() {
         // listen to events from server
-        this.sendMessage("wysylanie wiadomosci");
+        String inputLine;
+        try {
+            while ((inputLine = reader.readLine()) != null) {
+                JSONObject inputJSON = new JSONObject(inputLine);
+                resolveOperation(inputJSON);
+                writer.println(inputLine);
+                System.out.println("Wiadomosc od serwera: " + inputLine);
+            }
+
+        } catch(Exception e) {
+            System.err.println(e);
+        }
     }
 
 }
