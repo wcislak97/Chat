@@ -10,6 +10,8 @@ import static com.example.chat.ClientConnectionService.sendMessage;
 
 public class AddFriendDialogController {
 
+    private static String choseFriendToBeAdded=null;
+
     @FXML
     private Button btnFindFriend;
 
@@ -24,14 +26,29 @@ public class AddFriendDialogController {
 
     @FXML
     private void onbtnStartNewChatClicked(){
+    if(choseFriendToBeAdded!= null && !choseFriendToBeAdded.isEmpty()){
+        JSONObject jo = new JSONObject();
+        jo.put("operation", "addFriend");
+        jo.put("username",DataStore.username);
+        jo.put("friend",choseFriendToBeAdded);
+        sendMessage(jo.toString());
+        System.out.println("Wyslano dodanie przyjaciela");
+        onbtnFindFriendClicked();
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Przyjaciel dodany");
+        alert.showAndWait();
 
+    }
+    else{
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Nie wybrano przyjaciela do dodania");
+        alert.showAndWait();
+    }
 
     }
 
     @FXML
     private void onCellClicked(){
-        String test = (String) listViewAddFriends.getSelectionModel().getSelectedItem();
-        System.out.println(test + " clicked");
+        choseFriendToBeAdded= (String) listViewAddFriends.getSelectionModel().getSelectedItem();
+        System.out.println(choseFriendToBeAdded + " clicked");
     }
 
     @FXML

@@ -17,7 +17,7 @@
          <center>
             <ScrollPane fx:id="newChatPane" prefHeight="98.0" prefWidth="310.0" BorderPane.alignment="CENTER">
                <content>
-                  <ListView fx:id="listViewFriends" prefHeight="286.0" prefWidth="290.0"  />
+                  <ListView fx:id="listViewFriends" onMouseClicked="#onCellClicked" prefHeight="286.0" prefWidth="290.0"  />
                </content>
                <BorderPane.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" />
@@ -25,7 +25,7 @@
             </ScrollPane>
          </center>
          <bottom>
-            <Button fx:id="btnStartNewChat" alignment="CENTER" mnemonicParsing="false" text="New Chat" BorderPane.alignment="CENTER">
+            <Button fx:id="btnStartNewChat" onAction="#onbtnStartNewChatClicked" alignment="CENTER" mnemonicParsing="false" text="New Chat" BorderPane.alignment="CENTER">
                <BorderPane.margin>
                   <Insets bottom="10.0" />
                </BorderPane.margin>

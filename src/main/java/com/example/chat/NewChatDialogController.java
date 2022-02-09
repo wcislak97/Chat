@@ -11,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import org.json.JSONObject;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -22,8 +23,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
+import static com.example.chat.ClientConnectionService.sendMessage;
 
 public class NewChatDialogController implements Initializable, PropertyChangeListener {
+
+    private static String choseChatToBeAdded=null;
+    private ObservableList<String> observableList = FXCollections.observableArrayList();
 
     @FXML
     private Button btnStartNewChat;
@@ -35,18 +40,55 @@ public class NewChatDialogController implements Initializable, PropertyChangeLis
     private ListView listViewFriends;
 
 
-//    private void getFriendsList(){
-//        String username = ClientController.getUsername_true();
-//        System.out.println("username: " + username);
 
-    private ObservableList<String> observableList = FXCollections.observableArrayList();
+    @FXML
+    private void onCellClicked(){
+        choseChatToBeAdded= (String) listViewFriends.getSelectionModel().getSelectedItem();
+        System.out.println(choseChatToBeAdded + " clicked");
+    }
 
+    @FXML
+    private void onbtnStartNewChatClicked(){
+        if(choseChatToBeAdded!= null && !choseChatToBeAdded.isEmpty()){
+            JSONObject jo = new JSONObject();
+            jo.put("operation", "addChat");
+            jo.put("username",DataStore.username);
+            jo.put("friend",choseChatToBeAdded);
+            sendMessage(jo.toString());
+            System.out.println("Wyslano dodanie chatu z przyjacielem");
+            getFriendsList();
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Chat z przyjacielem dodany");
+            alert.showAndWait();
+
+        }
+        else{
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Nie wybrano przyjaciela do chatowania");
+            alert.showAndWait();
+        }
+    }
+
+
+    private void getFriendsList(){
+        JSONObject jo = new JSONObject();
+        jo.put("operation", "findFriendsNoChat");
+        jo.put("username",DataStore.username);
+
+        sendMessage(jo.toString());
+        System.out.println("Wyslano przyjaciela");
+        listViewFriends.getItems().clear();
+        for(int i=0;i<DataStore.findFriendsNoChat.size();i++) {
+            System.out.println(DataStore.findFriendsNoChat.get(i).toString());
+            listViewFriends.getItems().add(DataStore.findFriendsNoChat.get(i).toString());
+        }
+
+}
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        listViewFriends.getItems().add("one");
+        getFriendsList();
 
     }
+
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         Platform.runLater(() -> {

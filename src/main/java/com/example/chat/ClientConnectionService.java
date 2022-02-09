@@ -68,8 +68,17 @@ public class ClientConnectionService extends Thread {
            System.out.println(jArray.getJSONObject(ii).getString("username"));
          DataStore.findFriends.add(jArray.getJSONObject(ii).getString("username"));
         }
-//        DataStore.findFriends.add("pls");
-//        DataStore.findFriends.add("work");
+
+    }
+
+    public void resolveFindFriendsNoChat(JSONObject input){
+        DataStore.findFriendsNoChat.clear();
+        JSONArray jArray = input.getJSONArray("friendsNoChat");
+        for (int ii = 0; ii < jArray.length(); ii++) {
+            System.out.println(jArray.getJSONObject(ii).getString("username"));
+            DataStore.findFriendsNoChat.add(jArray.getJSONObject(ii).getString("username"));
+        }
+
     }
 
     public void resolveOperation(JSONObject input) {
@@ -80,6 +89,9 @@ public class ClientConnectionService extends Thread {
                 break;
             case "findFriends":
                 resolveFindFriends(input);
+                break;
+            case "findFriendsNoChat":
+                resolveFindFriendsNoChat(input);
                 break;
 
         }
