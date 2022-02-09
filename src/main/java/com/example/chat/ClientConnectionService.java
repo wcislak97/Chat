@@ -64,12 +64,12 @@ public class ClientConnectionService extends Thread {
 
 
         JSONArray jArray = input.getJSONArray("nonFriendList");
-        // for (int ii = 0; ii < jArray.length(); ii++) {
-        //   System.out.println(jArray.getJSONObject(ii).getString("username"));
-        // DataStore.findFriends.add(jArray.getJSONObject(ii).getString("username"));
-        //}
-        DataStore.findFriends.add("pls");
-        DataStore.findFriends.add("work");
+         for (int ii = 0; ii < jArray.length(); ii++) {
+           System.out.println(jArray.getJSONObject(ii).getString("username"));
+         DataStore.findFriends.add(jArray.getJSONObject(ii).getString("username"));
+        }
+//        DataStore.findFriends.add("pls");
+//        DataStore.findFriends.add("work");
     }
 
     public void resolveOperation(JSONObject input) {

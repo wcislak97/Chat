@@ -3,15 +3,13 @@ package com.example.chat;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class ServerConnectionService extends Thread {
 
@@ -78,17 +76,28 @@ public class ServerConnectionService extends Thread {
     private JSONArray tryFindFriend(String username,String friend){
         DatabaseConnection db = new DatabaseConnection();
         ResultSet rs;
+        //Creating a JSONObject object
+        JSONObject jsonObject = new JSONObject();
         JSONArray array = new JSONArray();
 
 
         try{
             rs = db.selectStatement("SELECT username FROM users WHERE username<>'"+username+"' AND username not in \n" +
                     "(SELECT username2 from friends where username1='"+username+"') \n" +
-                    "AND username NOT IN (SELECT username2 from friends where username1='"+username+"')" +
+                    "AND username NOT IN (SELECT username1 from friends where username2='"+username+"')" +
                     "AND username LIKE '%"+friend+"%'");
+
+//            rs = db.selectStatement("SELECT username2 AS username FROM `friends`");
             while(rs.next()!=false){
-                array.put(rs.getString("username"));
+//                array.put(rs.getString("username"));
+                JSONObject record = new JSONObject();
+                record.put("username", rs.getString("username"));
+                array.put(record);
             }
+            jsonObject.put("nonFriendList", array);
+//            FileWriter file = new FileWriter("output.json");
+//            file.write(jsonObject.toString());
+//            file.close();
         }
         catch (SQLException e){
             e.printStackTrace();

@@ -29,6 +29,12 @@ public class AddFriendDialogController {
     }
 
     @FXML
+    private void onCellClicked(){
+        String test = (String) listViewAddFriends.getSelectionModel().getSelectedItem();
+        System.out.println(test + " clicked");
+    }
+
+    @FXML
     private void onbtnFindFriendClicked(){
         String friend=txtFindFriend.getText();
 
