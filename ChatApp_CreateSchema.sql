@@ -1,3 +1,4 @@
+drop database chatapp;
 create database ChatApp;
 
 USE ChatApp;
@@ -14,43 +15,43 @@ surname varchar(100),
 foreign key(username) references Users(username)
 );
 
-create table Message(
-message_id integer primary key auto_increment,
-username varchar(255) not null,
-message_body varchar(255),
-sent_time datetime,
-foreign key (username) references Users(username)
-);
-
-create table Chat(
-chat_id integer primary key auto_increment,
-chat_title varchar(100) not null,
-last_message_id datetime
-);
 
 create table Bad_Words(
 word_id integer primary key auto_increment,
 bad_word varchar(100) not null
 );
 
-create table Message_Chat(
-message_id integer,
-chat_id integer,
-foreign key(message_id) references Message(message_id),
-foreign key(chat_id) references Chat(chat_id),
-primary key(message_id, chat_id)
-);
+CREATE TABLE chat (
+   sender_1 varchar(255) NULL,
+   sender_2 varchar(255) NULL,
+   message_id int NULL,
+   text_message varchar(1000) NULL,
+   sent_time datetime NULL,
+   UNIQUE KEY (message_id)
+ );
 
-create table Chat_User(
-chat_id integer,
-username varchar(255),
-foreign key(chat_id) references Chat(chat_id),
-foreign key(username) references Users(username),
-primary key(chat_id, username)
-);
+CREATE TABLE friends (
+   username1 varchar(255) NULL,
+   username2 varchar(255) NULL,
+   UNIQUE KEY (username1,username2)
+ );
+ 
 
-INSERT INTO users VALUES('test','test');
-INSERT INTO user_details VALUES ('test','test','test');
+
+INSERT INTO users(username,password)
+VALUES('test','test'),
+('test123','test123'),
+('x','x'),
+('123','123');
+
+INSERT INTO user_details(username,name,surname)
+VALUES('test','test','test'),
+('test123','test123','test123'),
+('x','x','x'),
+('123','123','123');
+
+
+INSERT INTO friends(username1,username2) VALUES ('test','test123');
 
 INSERT INTO bad_words(bad_word) VALUES
 ('chuj'), ('chuja'), ('chujek'), ('chuju'), ('chujem'), ('chujnia'), ('chujowy'), ('chujowa'), ('chujowe'), ('cipa'), ('cipę'), ('cipe'), 
@@ -115,4 +116,3 @@ INSERT INTO bad_words(bad_word) VALUES
 ('zapierdalali'), ('zapierdalający'), ('zapierdalajacy'), ('zapierdolić'), ('zapierdolic'), ('zapierdoli'), ('zapierdolił'), ('zapierdolil'), ('zapierdoliła'), 
 ('zapierdolila'), ('zapierdolą'), ('zapierdola'), ('zapierniczać'), ('zapierniczający'), ('zasrać'), ('zasranym'), ('zasrywać'), ('zasrywający'), ('zesrywać'), 
 ('zesrywający'), ('zjebać'), ('zjebac'), ('zjebał'), ('zjebal'), ('zjebała'), ('zjebala'), ('zjebana'), ('zjebią'), ('zjebali'), ('zjeby');
-
