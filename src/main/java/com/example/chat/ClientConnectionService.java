@@ -1,5 +1,6 @@
 package com.example.chat;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -7,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.List;
 
 public class ClientConnectionService extends Thread {
 
@@ -49,8 +51,25 @@ public class ClientConnectionService extends Thread {
     }
 
     public void resolveLogin(JSONObject input) {
-        DataStore.email = input.get("email").toString();
-        DataStore.isLoggedIn = true;
+
+        DataStore.username = input.get("username").toString();
+        if (input.get("status").toString().equals("login_ok"))
+            DataStore.isLoggedIn = true;
+        else
+            DataStore.isLoggedIn = false;
+    }
+
+    public void resolveFindFriends(JSONObject input) {
+        DataStore.findFriends.clear();
+
+
+        JSONArray jArray = input.getJSONArray("nonFriendList");
+        // for (int ii = 0; ii < jArray.length(); ii++) {
+        //   System.out.println(jArray.getJSONObject(ii).getString("username"));
+        // DataStore.findFriends.add(jArray.getJSONObject(ii).getString("username"));
+        //}
+        DataStore.findFriends.add("pls");
+        DataStore.findFriends.add("work");
     }
 
     public void resolveOperation(JSONObject input) {
@@ -58,10 +77,15 @@ public class ClientConnectionService extends Thread {
         switch (operation) {
             case "login":
                 resolveLogin(input);
+                break;
+            case "findFriends":
+                resolveFindFriends(input);
+                break;
+
         }
     }
 
-    public  void run() {
+    public void run() {
         // listen to events from server
         String inputLine;
         try {
@@ -72,7 +96,7 @@ public class ClientConnectionService extends Thread {
                 System.out.println("Wiadomosc od serwera: " + inputLine);
             }
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             System.err.println(e);
         }
     }

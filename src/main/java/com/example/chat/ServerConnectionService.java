@@ -1,5 +1,6 @@
 package com.example.chat;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -7,6 +8,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ServerConnectionService extends Thread {
 
@@ -49,25 +54,83 @@ public class ServerConnectionService extends Thread {
     }
 
     private boolean tryLogin(String username, String password) {
-        // check credentials in the database...
-        System.out.println("Zalogowano");
-        return true;
+        DatabaseConnection db = new DatabaseConnection();
+        ResultSet rs;
+        boolean res=false;
+        try {
+            rs = db.selectStatement("SELECT * FROM users WHERE username='" + username + "' and password='" + password + "'");
+            //if no user like that exist
+            if (rs.next() == false) {
+                res=false;
+            }
+            else{
+                System.out.println("Zalogowano");
+                res=true;
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+
+        return res;
+
+    }
+
+    private JSONArray tryFindFriend(String username,String friend){
+        DatabaseConnection db = new DatabaseConnection();
+        ResultSet rs;
+        JSONArray array = new JSONArray();
+
+
+        try{
+            rs = db.selectStatement("SELECT username FROM users WHERE username<>'"+username+"' AND username not in \n" +
+                    "(SELECT username2 from friends where username1='"+username+"') \n" +
+                    "AND username NOT IN (SELECT username2 from friends where username1='"+username+"')" +
+                    "AND username LIKE '%"+friend+"%'");
+            while(rs.next()!=false){
+                array.put(rs.getString("username"));
+            }
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+        return array;
     }
 
     public void resolveOpearation(JSONObject json) {
         String operation = json.get("operation").toString();
+        String username;
+        String password;
+        String friend;
         JSONObject response = new JSONObject();
         switch (operation) {
             case "login":
-                String username = json.get("username").toString();
-                String password = json.get("password").toString();
+                username = json.get("username").toString();
+                password = json.get("password").toString();
                 boolean isLoggedIn = tryLogin(username, password);
                 if (isLoggedIn) {
                     response.put("operation", "login");
                     response.put("status", "login_ok");
-                    response.put("email", username);
+                    response.put("username", username);
                     sendMessage(response.toString());
                 }
+                else{
+                    response.put("operation","login");
+                    response.put("status","login_notok");
+                    response.put("username",username);
+                    sendMessage(response.toString());
+                }
+                break;
+            case "findFriends":
+
+                JSONArray arr=new JSONArray();
+                username = json.get("username").toString();
+                friend = json.get("friend").toString();
+                arr = tryFindFriend(username, friend);
+                response.put("operation", "findFriends");
+                response.put("nonFriendList",arr);
+                sendMessage(response.toString());
+                break;
+
         }
     }
 
