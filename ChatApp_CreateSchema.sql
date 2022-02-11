@@ -30,10 +30,11 @@ friends_id int
  chat_id int,
  message_id int primary key auto_increment,
  username varchar(255),
- message_body varchar(1000),
+ message_body varchar(300),
  sent_time datetime,
  foreign key(username) references Users(username),
- foreign key(chat_id) references chat(chat_id)
+ foreign key(chat_id) references chat(chat_id),
+ unique(chat_id,username,message_body,sent_time)
  );
  
 create table Bad_Words(
