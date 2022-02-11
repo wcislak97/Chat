@@ -7,6 +7,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -14,16 +15,23 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.json.JSONObject;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
+import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
+import static com.example.chat.ClientConnectionService.sendMessage;
 
-public class ChatScreenController {
+
+public class ChatScreenController implements Initializable, PropertyChangeListener {
+
+    private static String chooseCurrentChat=null;
 
     @FXML
     private ListView listViewListOfChats;
@@ -93,9 +101,51 @@ public class ChatScreenController {
 
     @FXML
     private void onbtnSettingsClicked(){
-
+        getListOfChats();
+        refreshListOfMessages();
     }
 
+    @FXML
+    private void onCellClicked(){
+        DataStore.currentChatFriend= (String) listViewListOfChats.getSelectionModel().getSelectedItem();
+        System.out.println(DataStore.currentChatFriend + " clicked");
+       refreshListOfMessages();
+        //UPDATE LABEL ON THE TOP
+    }
+
+
+    private void getListOfChats(){
+        JSONObject jo = new JSONObject();
+        jo.put("operation", "findFriendsWithChat");
+        jo.put("username",DataStore.username);
+
+        sendMessage(jo.toString());
+        System.out.println("Wyslano przyjaciela");
+        listViewListOfChats.getItems().clear();
+
+        for(int i=0;i<DataStore.findFriendsWithChat.size();i++) {
+            System.out.println(DataStore.findFriendsWithChat.get(i).toString());
+            listViewListOfChats.getItems().add(DataStore.findFriendsWithChat.get(i).toString());
+        }
+    }
+
+    private void refreshListOfMessages(){
+        if(!DataStore.currentChatFriend.isEmpty()) {
+            JSONObject jo = new JSONObject();
+            jo.put("operation", "refreshListOfMessages");
+            jo.put("username", DataStore.username);
+            jo.put("friend", DataStore.currentChatFriend);
+
+            sendMessage(jo.toString());
+            System.out.println("Wyslano refreshListOfMessages");
+
+            listViewChatMessages.getItems().clear();
+            for(int i=0;i<DataStore.listOfMessages.size();i++) {
+                System.out.println(DataStore.listOfMessages.get(i).toString());
+                listViewChatMessages.getItems().add(DataStore.listOfMessages.get(i).toString());
+            }
+        }
+    }
 
     private void addMessage(String message){
         if(checkIfBadWord(message))
@@ -103,7 +153,14 @@ public class ChatScreenController {
             Alert alert = new Alert(Alert.AlertType.WARNING, "Napisano brzydkie słowo!!!");
             alert.showAndWait();
         }else {
-            listViewChatMessages.getItems().add(message);
+            JSONObject jo = new JSONObject();
+            jo.put("operation", "newMessage");
+            jo.put("username", DataStore.username);
+            jo.put("friend", DataStore.currentChatFriend);
+            jo.put("message",message);
+
+            sendMessage(jo.toString());
+            System.out.println("Wyslano newMessage");
         }
     }
 
@@ -133,5 +190,19 @@ public class ChatScreenController {
 
 
 
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        getListOfChats();
+
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        Platform.runLater(() -> {
+            listViewListOfChats.getItems().add(evt.getNewValue());
+            listViewChatMessages.getItems().add(evt.getNewValue());
+        });
+    }
 
 }

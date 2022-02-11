@@ -20,7 +20,7 @@
                <center>
                       <AnchorPane minHeight="0.0" minWidth="300.0">
                           <children>
-                                <ListView fx:id="listViewListOfChats" layoutX="1.0" layoutY="1.0" maxWidth="300.0" minWidth="300.0" prefHeight="716.0" prefWidth="300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="3.0" AnchorPane.topAnchor="0.0" />
+                                <ListView fx:id="listViewListOfChats" onMouseClicked="#onCellClicked" layoutX="1.0" layoutY="1.0" maxWidth="300.0" minWidth="300.0" prefHeight="716.0" prefWidth="300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="3.0" AnchorPane.topAnchor="0.0" />
                           </children>
                       </AnchorPane>
                </center>

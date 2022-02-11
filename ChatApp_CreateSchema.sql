@@ -16,27 +16,30 @@ foreign key(username) references Users(username)
 );
 
 
+CREATE TABLE friends (
+   friends_id int,
+   username varchar(255) NULL
+ );
+ 
+CREATE TABLE chat (
+chat_id integer primary key auto_increment,
+friends_id int
+ );
+ 
+ CREATE TABLE message(
+ chat_id int,
+ message_id int primary key auto_increment,
+ username varchar(255),
+ message_body varchar(1000),
+ sent_time datetime,
+ foreign key(username) references Users(username),
+ foreign key(chat_id) references chat(chat_id)
+ );
+ 
 create table Bad_Words(
 word_id integer primary key auto_increment,
 bad_word varchar(100) not null
 );
-
-CREATE TABLE chat (
-   sender_1 varchar(255) NULL,
-   sender_2 varchar(255) NULL,
-   message_id int NULL,
-   text_message varchar(1000) NULL,
-   sent_time datetime NULL,
-   UNIQUE KEY (message_id)
- );
-
-CREATE TABLE friends (
-   username1 varchar(255) NULL,
-   username2 varchar(255) NULL,
-   UNIQUE KEY (username1,username2)
- );
- 
-
 
 INSERT INTO users(username,password)
 VALUES('test','test'),
@@ -50,8 +53,8 @@ VALUES('test','test','test'),
 ('x','x','x'),
 ('123','123','123');
 
-
-INSERT INTO friends(username1,username2) VALUES ('test','test123');
+INSERT INTO friends(friends_id, username)
+VALUES (1,null),(1,null);
 
 INSERT INTO bad_words(bad_word) VALUES
 ('chuj'), ('chuja'), ('chujek'), ('chuju'), ('chujem'), ('chujnia'), ('chujowy'), ('chujowa'), ('chujowe'), ('cipa'), ('cipę'), ('cipe'), 

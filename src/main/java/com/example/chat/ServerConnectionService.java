@@ -83,10 +83,9 @@ public class ServerConnectionService extends Thread {
 
 
         try{
-            rs = db.selectStatement("SELECT username FROM users WHERE username<>'"+username+"' AND username not in \n" +
-                    "(SELECT username2 from friends where username1='"+username+"') \n" +
-                    "AND username NOT IN (SELECT username1 from friends where username2='"+username+"')" +
-                    "AND username LIKE '%"+friend+"%'");
+            rs = db.selectStatement("SELECT username FROM users WHERE username<>'"+username+"' AND username NOT in (\n" +
+                    "SELECT DISTINCT username FROM friends WHERE friends_id in (SELECT distinct friends_id FROM friends WHERE username='"+username+"'))\n" +
+                    "AND username like '%"+friend+"%'");
 
             while(rs.next()!=false){
 
@@ -111,15 +110,10 @@ public class ServerConnectionService extends Thread {
         JSONArray array = new JSONArray();
 
         try{
-            rs = db.selectStatement("select username2 as username \n" +
-                    "from friends WHERE username1='"+username+"' \n" +
-                    "AND username2 not in (SELECT distinct sender_2 FROM chat where sender_1='"+username+"') \n" +
-                    "AND username2 not in (SELECT distinct sender_1 FROM chat where sender_2='"+username+"')\n" +
-                    "UNION\n" +
-                    "select username1 as username \n" +
-                    "from friends WHERE username2='test' \n" +
-                    "AND username1 not in (SELECT distinct sender_2 FROM chat where sender_1='"+username+"') \n" +
-                    "AND username1 not in (SELECT distinct sender_1 FROM chat where sender_2='"+username+"')");
+            rs = db.selectStatement("SELECT distinct username from friends WHERE username<>'"+username+"' AND friends_id IN (\n" +
+                    "SELECT distinct friends_id FROM friends WHERE friends_id IN \n" +
+                    "(SELECT friends_id FROM friends WHERE username='"+username+"' \n" +
+                    "AND friends_id NOT IN (SELECT friends_id FROM chat WHERE friends_id IN (SELECT distinct friends_id FROM friends WHERE username='"+username+"'))))");
             while(rs.next()!=false){
 
                 JSONObject record = new JSONObject();
@@ -140,14 +134,16 @@ public class ServerConnectionService extends Thread {
     private void tryAddFriend(String username, String friend){
         DatabaseConnection db = new DatabaseConnection();
         ResultSet rs1;
-        ResultSet rs2;
         int i;
         try{
-            rs1=db.selectStatement("SELECT * from friends where username1='"+username+"' and username2='"+friend+"'");
-            rs2=db.selectStatement("SELECT * from friends where username1='"+friend+"' and username2='"+username+"'");
+            rs1=db.selectStatement("SELECT distinct friends_id FROM friends WHERE friends_id IN \n" +
+                    "(SELECT friends_id FROM friends WHERE username='"+username+"' \n" +
+                    "AND friends_id IN (SELECT friends_id FROM friends WHERE username='"+friend+"'))");
 
-            if(rs1.next()==false && rs2.next()==false){
-              i=db.insertStatement("INSERT INTO friends(username1,username2) VALUES('"+username+"','"+friend+"')");
+            if(rs1.next()==false){
+              i=db.insertStatement("INSERT INTO friends(friends_id, username)\n" +
+                      "VALUES ((SELECT MAX( friends_id ) FROM friends f) +1, '"+username+"'),\n" +
+                      "  ((SELECT MAX( friends_id ) FROM friends f), '"+friend+"')");
             }
         }catch (SQLException e){
             e.printStackTrace();
@@ -158,20 +154,93 @@ public class ServerConnectionService extends Thread {
     private void tryAddChat(String username, String friend){
         DatabaseConnection db = new DatabaseConnection();
         ResultSet rs1;
-        ResultSet rs2;
         int i;
         try{
-            rs1=db.selectStatement("SELECT distinct sender_2 from chat where sender_1='"+username+"' and sender_2='"+friend+"'");
-            rs2=db.selectStatement("SELECT distinct sender_1 from chat where sender_1='"+friend+"' and sender_2='"+username+"'");
+            rs1=db.selectStatement("SELECT chat_id FROM chat WHERE friends_id IN (SELECT distinct friends_id FROM friends WHERE friends_id IN \n" +
+                    "(SELECT friends_id FROM friends WHERE username='"+username+"' AND friends_id IN \n" +
+                    "(SELECT friends_id FROM friends WHERE username='"+friend+"')))");
 
-            if(rs1.next()==false && rs2.next()==false){
-                i=db.insertStatement("INSERT INTO chat(sender_1,sender_2) VALUES('"+username+"','"+friend+"')");
+            if(rs1.next()==false){
+                i=db.insertStatement("INSERT into chat(friends_id) SELECT distinct friends_id FROM friends WHERE friends_id IN \n" +
+                        "(SELECT friends_id FROM friends WHERE username='"+username+"' AND friends_id IN \n" +
+                        "(SELECT friends_id FROM friends WHERE username='"+friend+"'));");
             }
         }catch (SQLException e){
             e.printStackTrace();
         }
 
     }
+
+    private JSONArray tryFindfindFriendsWithChat(String username){
+        DatabaseConnection db = new DatabaseConnection();
+        ResultSet rs;
+        //Creating a JSONObject object
+        JSONObject jsonObject = new JSONObject();
+        JSONArray array = new JSONArray();
+
+        try{
+            rs = db.selectStatement("SELECT username FROM users where username IN \n" +
+                    "(select distinct username from friends WHERE username<>'"+username+"' AND friends_id IN \n" +
+                    "(SELECT friends_id FROM chat WHERE friends_id IN (SELECT distinct friends_id FROM friends WHERE username='"+username+"')))");
+            while(rs.next()!=false){
+                JSONObject record = new JSONObject();
+                record.put("username", rs.getString("username"));
+                array.put(record);
+            }
+            jsonObject.put("friendsWithChat", array);
+
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+
+        return array;
+    }
+
+    private JSONArray tryRefreshListOfMessages(String username,String friend){
+        DatabaseConnection db = new DatabaseConnection();
+        ResultSet rs;
+        //Creating a JSONObject object
+        JSONObject jsonObject = new JSONObject();
+        JSONArray array = new JSONArray();
+
+        try{
+            rs = db.selectStatement("SELECT CONCAT(sent_time,' :  ',username,': ',message_body) as message_overall FROM message WHERE chat_id IN(\n" +
+                    "SELECT distinct chat_id FROM chat WHERE friends_id IN (SELECT friends_id FROM friends WHERE friends_id IN \n" +
+                    "(SELECT friends_id FROM friends WHERE username='"+username+"' AND friends_id IN \n" +
+                    "(SELECT friends_id FROM friends WHERE username='"+friend+"')))) order by message_id asc");
+            while(rs.next()!=false){
+                JSONObject record = new JSONObject();
+                record.put("message_overall", rs.getString("message_overall"));
+                array.put(record);
+            }
+            jsonObject.put("listOfMessages", array);
+
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+
+        return array;
+    }
+
+    public void tryAddMessage(String username,String friend,String message){
+        DatabaseConnection db = new DatabaseConnection();
+        ResultSet rs1;
+        int i;
+        System.out.println("Why two times?");
+        try{
+                i=db.insertStatement("INSERT INTO message(chat_id,username,message_body,sent_time)\n" +
+                        "VALUES ((SELECT distinct chat_id FROM chat WHERE friends_id IN (SELECT friends_id FROM friends WHERE friends_id IN \n" +
+                        "(SELECT friends_id FROM friends WHERE username='"+username+"' AND friends_id IN \n" +
+                        "(SELECT friends_id FROM friends WHERE username='"+friend+"')))), '"+username+"','"+message+"',current_timestamp())");
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
 
     public void resolveOpearation(JSONObject json) {
         String operation = json.get("operation").toString();
@@ -224,7 +293,29 @@ public class ServerConnectionService extends Thread {
                 username=json.get("username").toString();
                 friend=json.get("friend").toString();
                 tryAddChat(username,friend);
-
+                break;
+            case "findFriendsWithChat":
+                username=json.get("username").toString();
+                arr=tryFindfindFriendsWithChat(username);
+                response.put("operation", "findFriendsWithChat");
+                response.put("friendsWithChat",arr);
+                sendMessage(response.toString());
+                break;
+            case "refreshListOfMessages":
+                username=json.get("username").toString();
+                friend=json.get("friend").toString();
+                arr=tryRefreshListOfMessages(username,friend);
+                response.put("operation", "refreshListOfMessages");
+                response.put("listOfMessages",arr);
+                sendMessage(response.toString());
+                break;
+            case "newMessage":
+                System.out.println("?????Why two times");
+                username=json.get("username").toString();
+                friend=json.get("friend").toString();
+                String message=json.get("message").toString();
+                tryAddMessage(username,friend,message);
+                break;
         }
     }
 

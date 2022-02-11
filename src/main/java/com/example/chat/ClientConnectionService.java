@@ -81,6 +81,25 @@ public class ClientConnectionService extends Thread {
 
     }
 
+    public void resolvefindFriendsWithChat(JSONObject input){
+        DataStore.findFriendsWithChat.clear();
+        JSONArray jArray = input.getJSONArray("friendsWithChat");
+        for (int ii = 0; ii < jArray.length(); ii++) {
+            System.out.println(jArray.getJSONObject(ii).getString("username"));
+            DataStore.findFriendsWithChat.add(jArray.getJSONObject(ii).getString("username"));
+        }
+
+    }
+
+    public void resolveRefreshListOfMessages(JSONObject input){
+        DataStore.listOfMessages.clear();
+        JSONArray jArray = input.getJSONArray("listOfMessages");
+        for (int ii = 0; ii < jArray.length(); ii++) {
+            System.out.println(jArray.getJSONObject(ii).getString("message_overall"));
+            DataStore.listOfMessages.add(jArray.getJSONObject(ii).getString("message_overall"));
+        }
+    }
+
     public void resolveOperation(JSONObject input) {
         String operation = input.get("operation").toString();
         switch (operation) {
@@ -92,6 +111,12 @@ public class ClientConnectionService extends Thread {
                 break;
             case "findFriendsNoChat":
                 resolveFindFriendsNoChat(input);
+                break;
+            case "findFriendsWithChat":
+                resolvefindFriendsWithChat(input);
+                break;
+            case "refreshListOfMessages":
+                resolveRefreshListOfMessages(input);
                 break;
 
         }
