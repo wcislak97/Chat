@@ -161,6 +161,7 @@ public class ChatScreenController implements Initializable, PropertyChangeListen
 
             sendMessage(jo.toString());
             System.out.println("Wyslano newMessage");
+            refreshListOfMessages();
         }
     }
 
