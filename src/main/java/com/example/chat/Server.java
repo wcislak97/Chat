@@ -6,7 +6,6 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 public class Server {
-    private static ArrayList<ClientService> clients = new ArrayList<ClientService>();
 
     public static void main(String[] args) {
         ServerSocket serverSocket;
